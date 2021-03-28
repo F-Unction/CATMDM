@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <include layout="@layout/content_main" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:theme="@style/Theme.CatMDM.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/Theme.CatMDM.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/switchWifiDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用WLAN" />
+
+                    <Switch
+                        android:id="@+id/switchHomeButtonDisable"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用HOME键" />
+
+                    <Switch
+                        android:id="@+id/switchExternalStorageDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用存储访问(Micro SD)" />
+
+                    <Switch
+                        android:id="@+id/switchUSBDataDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用USB调试模式、数据传输" />
+
+                    <Switch
+                        android:id="@+id/switchStatusBarExpandPanelDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用状态栏下拉菜单" />
+
+                    <Switch
+                        android:id="@+id/switchAdbDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用ADB端口" />
+
+                    <Switch
+                        android:id="@+id/switchTaskButtonDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用任务键" />
+
+                    <Switch
+                        android:id="@+id/switchSystemBrowserDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用系统预装浏览器" />
+
+                    <Switch
+                        android:id="@+id/switchScreenCaptureDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用系统截屏功能" />
+
+                    <Switch
+                        android:id="@+id/switchChangeWallpaperDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用墙纸切换功能" />
+
+                    <Switch
+                        android:id="@+id/switchSendNotificationDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁用应用发送通知功能" />
+
+                    <Switch
+                        android:id="@+id/switchDevelopmentOptionDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁止开发人员选项" />
+
+                    <Switch
+                        android:id="@+id/switchRestoreFactoryDisabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:text="禁止恢复出厂设置" />
+                </LinearLayout>
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/editNetworkAccessBlacklist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:hint="网络访问黑名单"
+                        android:inputType="textMultiLine"
+                        android:textColorHint="#cecece"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/editNetworkAccessWhitelist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:hint="网络访问白名单(IP)"
+                        android:inputType="textMultiLine"
+                        android:textColorHint="#cecece"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/editInstallPackageWhiteList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:hint="应用安装白名单"
+                        android:inputType="textMultiLine"
+                        android:textColorHint="#cecece"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
