@@ -5,6 +5,8 @@ import com.mdm.cat.b.SettingsActivity;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -87,44 +89,38 @@ public class Utils {
     };
 
     public static void updateWebPolicies(boolean isInSettingsActivity) throws Exception {
-        String uurl;
-        if(isInSettingsActivity)
-        {
-            uurl= SettingsActivity.urlEdit.getText().toString();
-        }
-        else
-        {
-            uurl=Utils.config.getString("Url");
-        }
-        if (!uurl.equals("")) {
-            Utils.config.put("Url", uurl);
-            new Thread(getPolicy).start();
-        } else {
-            if(isInSettingsActivity) {
-                SettingsActivity.urlEdit.setEnabled(true);
+        try {
+            String uurl;
+            if (isInSettingsActivity) {
+                uurl = SettingsActivity.urlEdit.getText().toString();
+            } else {
+                uurl = Utils.config.getString("Url");
             }
-            Utils.config.put("Url", "");
-        }
+            if (!uurl.equals("")) {
+                Utils.config.put("Url", uurl);
+                new Thread(getPolicy).start();
+            } else {
+                if (isInSettingsActivity) {
+                    SettingsActivity.urlEdit.setEnabled(true);
+                }
+                Utils.config.put("Url", "");
+            }
 
-        FileOutputStream fos = MainActivity.getMainActivity().openFileOutput("config.json", Context.MODE_PRIVATE);
-        byte[] bytes = Utils.config.toJSONString().getBytes();
-        fos.write(bytes);
-        fos.close();
+            FileOutputStream fos = MainActivity.getMainActivity().openFileOutput("config.json", Context.MODE_PRIVATE);
+            byte[] bytes = Utils.config.toJSONString().getBytes();
+            fos.write(bytes);
+            fos.close();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public static void applyPolicyFromConfig(String str) {
-        ComponentName mAdminName = Utils.mAdminName;
-        DeviceRestrictionManager DRM = Utils.DRM;
-        DeviceNetworkManager DNM = Utils.DNM;
-        DevicePackageManager DPM = Utils.DPM;
-        DeviceSettingsManager DSM = Utils.DSM;
-
         JSONObject policies = JSONObject.parseObject(str);
 
         try {
             SettingsActivity.urlEdit.setEnabled(!policies.getBooleanValue("ForceWebPolicy"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ;
         }
 
@@ -141,6 +137,11 @@ public class Utils {
         DRM.setSendNotificationDisabled(mAdminName, policies.getBooleanValue("SendNotificationDisabled"));
         DSM.setDevelopmentOptionDisabled(mAdminName, policies.getBooleanValue("DevelopmentOptionDisabled"));
         DSM.setRestoreFactoryDisabled(mAdminName, policies.getBooleanValue("RestoreFactoryDisabled"));
+
+        Utils.DCM.clearDefaultLauncher(Utils.mAdminName);
+        if (policies.getString("DefaultLauncher") != "") {
+            Utils.DCM.setDefaultLauncher(Utils.mAdminName, policies.getString("DefaultLauncher"), policies.getString("DefaultLauncher") + ".MainActivity");
+        }
 
         List<String> listTo, listFrom;
         if (!JSON.parseArray(policies.getJSONArray("NetworkAccessWhitelist").toJSONString(), String.class).isEmpty()) {
@@ -202,5 +203,22 @@ public class Utils {
                 DPM.removeInstallPackageWhiteList(mAdminName, new ArrayList(Arrays.asList(listFrom.get(i))));
             }
         }
+    }
+
+    public static String getLauncherPackageName(Context context) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo res = context.getPackageManager().resolveActivity(intent, 0);
+        if (res.activityInfo == null) {
+            // should not happen. A home is always installed, isn't it?
+            return null;
+        }
+        if (res.activityInfo.packageName.equals("android")) {
+            // 有多个桌面程序存在，且未指定默认项时；
+            return null;
+        } else {
+            return res.activityInfo.packageName;
+        }
+
     }
 }

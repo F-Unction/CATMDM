@@ -12,8 +12,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static EditText urlEdit;
 
-    public SettingsActivity()
-    {
+    public SettingsActivity() {
         settingsActivity = this;
     }
 
@@ -22,7 +21,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onStart();
         urlEdit.setEnabled(false);
         try {
-            Utils.updateWebPolicies(false);
+            if (Utils.config.getString("Url") != "") {
+                Utils.updateWebPolicies(false);
+            }
         } catch (Exception e) {
             new AlertDialog.Builder(SettingsActivity.this)
                     .setTitle("错误")

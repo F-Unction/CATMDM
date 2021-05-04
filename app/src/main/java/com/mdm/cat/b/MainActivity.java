@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public EditText editNetworkAccessBlacklist;
     public EditText editNetworkAccessWhitelist;
     public EditText editInstallPackageWhiteList;
+    public EditText editDefaultLauncher;
 
     public Switch switchWifiDisabled;
     public Switch switchHomeButtonDisabled;
@@ -132,6 +133,10 @@ public class MainActivity extends AppCompatActivity {
                 Utils.DSM.setDevelopmentOptionDisabled(Utils.mAdminName, switchDevelopmentOptionDisabled.isChecked());
                 Utils.DSM.setRestoreFactoryDisabled(Utils.mAdminName, switchRestoreFactoryDisabled.isChecked());
 
+                Utils.DCM.clearDefaultLauncher(Utils.mAdminName);
+                if (editDefaultLauncher.getText().toString() != "") {
+                    Utils.DCM.setDefaultLauncher(Utils.mAdminName, editDefaultLauncher.getText().toString(), editDefaultLauncher.getText().toString() + ".MainActivity");
+                }
                 List<String> listTo, listFrom;
                 if (!editNetworkAccessBlacklist.getText().toString().equals("")) {
                     listTo = Arrays.asList(editNetworkAccessBlacklist.getText().toString().split("\n"));
@@ -241,13 +246,13 @@ public class MainActivity extends AppCompatActivity {
         //Utils.DHSM.removeSuperWhiteListForHwSystemManger(Utils.mAdminName, superWhiteListPackage);
     }
 
-    private void updateObjects() throws Exception{
+    private void updateObjects() throws Exception {
         try {
             // 更改Edit内容
             editNetworkAccessWhitelist.setText(String.join("\n", Utils.DNM.getNetworkAccessWhitelist(Utils.mAdminName)));
             editNetworkAccessBlacklist.setText(String.join("\n", Utils.DNM.getNetworkAccessBlackList(Utils.mAdminName)));
             editInstallPackageWhiteList.setText(String.join("\n", Utils.DPM.getInstallPackageWhiteList(Utils.mAdminName)));
-
+            editDefaultLauncher.setText(Utils.getLauncherPackageName(MainActivity.this));
 
             // 更改Switch状态
             switchWifiDisabled.setChecked(Utils.DRM.isWifiDisabled(Utils.mAdminName));
@@ -263,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             switchSendNotificationDisabled.setChecked(Utils.DRM.isSendNotificationDisabled(Utils.mAdminName));
             switchDevelopmentOptionDisabled.setChecked(Utils.DSM.isDevelopmentOptionDisabled(Utils.mAdminName));
             switchRestoreFactoryDisabled.setChecked(Utils.DSM.isRestoreFactoryDisabled(Utils.mAdminName));
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -273,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         editNetworkAccessBlacklist = findViewById(R.id.editNetworkAccessBlacklist);
         editNetworkAccessWhitelist = findViewById(R.id.editNetworkAccessWhitelist);
         editInstallPackageWhiteList = findViewById(R.id.editInstallPackageWhiteList);
+        editDefaultLauncher = findViewById(R.id.editDefaultLauncher);
         // 获取Switch
         switchWifiDisabled = findViewById(R.id.switchWifiDisabled);
         switchHomeButtonDisabled = findViewById(R.id.switchHomeButtonDisable);
