@@ -185,6 +185,16 @@
                         android:textColorHint="#cecece"
                         android:textSize="14sp" />
 
+                    <EditText
+                        android:id="@+id/editDefaultLauncher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:hint="第三方默认桌面"
+                        android:textColorHint="#cecece"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
